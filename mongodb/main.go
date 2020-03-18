@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"math/rand"
 	"os"
 	"os/signal"
 	"time"
@@ -46,27 +47,27 @@ func TimeCost(start time.Time, name ...string) {
 func main() {
 	//var err error
 
-	collection := DB.Database("testing").Collection("numbers")
+	collection := DB.Database("testing1").Collection("numbers")
 
 	ctx, _ := context.WithCancel(context.Background())
 	//ctx, _ = context.WithTimeout(context.Background(), 200*time.Millisecond)
 
-	//for i := 0; i < 10; i++ {
-	//	go func() {
-	//		for i := 1; i <= 100000; i++ {
-	//			s := Test{
-	//				Name: fmt.Sprintf("hello-%d", GetId()),
-	//				Age:  rand.Int31(),
-	//			}
-	//			res, err := collection.InsertOne(ctx, s)
-	//			if err != nil {
-	//				panic(err)
-	//			}
-	//			id := res.InsertedID
-	//			fmt.Println(i, id)
-	//		}
-	//	}()
-	//}
+	for i := 0; i < 10; i++ {
+		go func() {
+			for i := 1; i <= 100000; i++ {
+				s := Test{
+					Name: fmt.Sprintf("hello-%d", GetId()),
+					Age:  rand.Int31(),
+				}
+				res, err := collection.InsertOne(ctx, s)
+				if err != nil {
+					panic(err)
+				}
+				id := res.InsertedID
+				fmt.Println(i, id)
+			}
+		}()
+	}
 
 	// 查询
 	func() {

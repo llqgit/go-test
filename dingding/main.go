@@ -3,7 +3,7 @@ package main
 import "github.com/llqgit/go-test/dingding/dingding"
 
 func main() {
-	token := "your token here"
+	token := "your token here" // TODO
 	ding := dingding.NewDing(token, "test")
 	ding.Send(dingding.DingMsg{
 		MsgType: "markdown",
