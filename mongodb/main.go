@@ -110,3 +110,37 @@ func main() {
 
 	<-signals
 }
+
+type User struct {
+	Name   string     `json:"name"`
+	Detail UserDetail `bson:"inline"`
+}
+
+type UserDetail struct {
+	Mobile int `json:"mobile"`
+	Gender int `json:"gender"`
+}
+
+// 插入信息
+func InlineStructInsert() {
+	db := DB.Database("testing2")
+	collection := db.Collection("user")
+	_, _ = collection.InsertOne(context.TODO(), User{
+		Name: "abc",
+		Detail: UserDetail{
+			Mobile: 123,
+			Gender: 1,
+		},
+	})
+}
+
+// 获取信息
+func InlineStructFetch() []User {
+	var userList []User
+	db := DB.Database("testing2")
+	collection := db.Collection("user")
+	cursor, _ := collection.Find(context.TODO(), bson.M{"name": "abc"})
+	_ = cursor.All(context.TODO(), &userList)
+
+	return userList
+}
